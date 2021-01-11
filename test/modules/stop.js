@@ -10,7 +10,6 @@ class Off extends BaseCommand {
     }
 
     run(msg) {
-        if(msg.content.startsWith('//off'))
         msg.channel.send('Shutting down...')
         .then(() => {
             return process.exit(0);

@@ -12,7 +12,6 @@ class VibeChecker extends BaseCommand {
     }
 
     run(msg) {
-        if(msg.content.startsWith('//vibecheck'))
         msg.channel.send('Vibe check ok.');
     }
 }

@@ -14,17 +14,18 @@ class BaseEvent {
                 placeholder.push(this.client.commandHandler.commands.get(entries));
             });
         } else {
-            placeholder = this.client.commandHandler.commands.get(this.entries);
+            placeholder = [this.client.commandHandler.commands.get(this.entries)];
         }
         return placeholder;
     }
 
-    exec(n,o) {
-        if(Array.isArray(this.manager))
+    get prefix() {
+        return this.client.commandHandler.prefix;
+    }
+
+    exec() {
         for(let managers of this.manager)
-        managers.run(n,o);
-        else
-        this.manager.run(n,o);
+        managers.run();
     }
 }
 

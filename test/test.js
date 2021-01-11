@@ -11,10 +11,5 @@ const { HyperionClient } = require('../src/hyperion');
 const client = new HyperionClient();
 
 client.commandHandler.loadMulti([vibechecker, prepper, off, print]);
-client.eventHandler.load(message);
-client.eventHandler.load(ready);
-
-client.commandHandler.commands.get('ready').run();
-client.emit('ready');
-client.commandHandler.commands.get('print').run('Test');
-client.destroy();
+client.eventHandler.loadMulti([message, ready]);
+client.commandHandler.setPrefix('//');

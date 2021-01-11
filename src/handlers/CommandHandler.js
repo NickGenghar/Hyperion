@@ -1,8 +1,14 @@
 const { Collection } = require('discord.js');
 
 class CommandHandler {
+    prefix = '';
     constructor() {
         this.commands = new Collection();
+    }
+
+    setPrefix(prefix) {
+        if(typeof prefix !== 'string') throw new Error(`Prefix type needs to be of type string. Received type "${(typeof prefix)}".`);
+        this.prefix = prefix;
     }
 
     load(cModule) {
