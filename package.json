@@ -1,5 +1,5 @@
 {
-  "name": "hyperion",
+  "name": "discord_hyperion",
   "version": "1.0.0",
   "description": "Simple yet scalable Discord.js framework",
   "main": "src/hyperion.js",
@@ -7,10 +7,10 @@
     "test": "node inspect test/test.js"
   },
   "keywords": [
-    "hyperion",
+    "discord_hyperion",
     "discord.js"
   ],
-  "author": "Nick Genghar",
+  "author": "Nick Hardester",
   "license": "MIT",
   "repository": "https://github.com/NickGenghar/Hyperion.git",
   "dependencies": {},
