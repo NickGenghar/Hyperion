@@ -3,6 +3,11 @@ const CommandHandler = require('../handlers/CommandHandler');
 const EventHandler = require('../handlers/EventHandler');
 
 class HyperionClient extends DiscordClient {
+    /**
+     * 
+     * @param {any} options Options for Discord Client
+     * @param {any} HyperionOptions Options for Hyperion Client
+     */
     constructor(options = {}, HyperionOptions) {
         super(HyperionOptions || options);
 

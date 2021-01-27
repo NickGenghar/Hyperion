@@ -1,5 +1,12 @@
+/**
+ * Base Command class.
+ */
 class BaseCommand {
-    constructor(name, options = {}) {
+    /**
+     * @param {String} name Name of a command module.
+     * @param {{locale:String,alias:String|String[],desc:String,usage:String|String[],dev:Boolean,mod:Boolean,activate:Boolean}} param Parameters for the command module.
+     */
+    constructor(name, param = {}) {
         this.name = name;
 
         const {
@@ -10,7 +17,7 @@ class BaseCommand {
             dev = false,
             mod = false,
             activate = false
-        } = options;
+        } = param;
 
         this.locale = locale;
         this.alias = Array.isArray(alias) ? [this.name].concat(alias) : [this.name, alias];
@@ -22,10 +29,8 @@ class BaseCommand {
     }
 
     /**
-     * @param {import('discord.js').Message} msg
-     * @param {Array<String>} args
-     * @param {Map|import('discord.js').Collection} col
-     * @returns {Promise<import('discord.js').Message>}
+     * @description The command runner. Please modify this method before using.
+     * @returns {void}
      */
     run() {
         throw new Error('Command module not prepared. Please customize this method in order to use it.');
