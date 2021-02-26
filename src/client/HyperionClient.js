@@ -16,7 +16,7 @@ class HyperionClient extends DiscordClient {
          * @type {import('discord.js').Snowflake}
          */
         this.developers = developers;
-        this.commandHandler = new CommandHandler();
+        this.commandHandler = new CommandHandler(this);
         this.eventHandler = new EventHandler(this);
     }
 }

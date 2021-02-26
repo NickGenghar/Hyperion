@@ -2,8 +2,9 @@ const { Collection } = require('discord.js');
 
 class CommandHandler {
     prefix = '';
-    constructor() {
+    constructor(client) {
         this.commands = new Collection();
+        this.client = client;
     }
 
     setPrefix(prefix) {
@@ -12,7 +13,7 @@ class CommandHandler {
     }
 
     load(cModule) {
-        let mod = new cModule()
+        let mod = new cModule(this.client)
         return this.commands.set(mod.name, mod);
     }
 

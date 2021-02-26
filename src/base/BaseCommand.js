@@ -6,8 +6,9 @@ class BaseCommand {
      * @param {String} name Name of a command module.
      * @param {{locale:String,alias:String|String[],desc:String,usage:String|String[],dev:Boolean,mod:Boolean,activate:Boolean}} param Parameters for the command module.
      */
-    constructor(name, param = {}) {
+    constructor(name, param = {}, client) {
         this.name = name;
+        this.client = client || null;
 
         const {
             locale = '',

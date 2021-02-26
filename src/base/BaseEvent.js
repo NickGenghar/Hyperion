@@ -1,10 +1,7 @@
-const { HyperionClient,BaseCommand } = require('../hyperion');
-
 class BaseEvent {
-    prefix = '';
     /**
      * @param {String} name The name of the module.
-     * @param {HyperionClient} client The hyperion client. As an event module, just reintroduce the client constructor.
+     * @param {import {HyperionClient} from '../hyperion'} client The hyperion client. As an event module, just reintroduce the client constructor.
      * @param {String[]} entries List of command modules that will be handled by this event driver.
      * @param {String} prefix The prefix provided by the command handler. Use this with a message handler when working with commands.
      */
@@ -16,7 +13,7 @@ class BaseEvent {
 
     /**
      * @description Returns a list of command modules attached to this event driver.
-     * @returns {BaseCommand[]} An array of BaseCommand
+     * @returns {import {BaseCommand} from '../hyperion'[]} An array of BaseCommand
      */
     get manager() {
         let placeholder;
@@ -24,10 +21,10 @@ class BaseEvent {
         else if(Array.isArray(this.entries)) {
             placeholder = [];
             this.entries.forEach(entries => {
-                placeholder.push(this.client.prototype.commandHandler.commands.get(entries));
+                placeholder.push(this.client.commandHandler.commands.get(entries));
             });
         } else {
-            placeholder = [this.client.prototype.commandHandler.commands.get(this.entries)];
+            placeholder = [this.client.commandHandler.commands.get(this.entries)];
         }
         return placeholder;
     }
@@ -36,8 +33,8 @@ class BaseEvent {
      * @description The command prefix defined by the command handler.
      * @type {String}
      */
-    set prefix() {
-        this.prefix = this.client.prototype.commandHandler.prefix;
+    get prefix() {
+        return this.client.commandHandler.prefix;
     }
 
     /**
