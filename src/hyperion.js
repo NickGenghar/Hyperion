@@ -4,5 +4,6 @@ module.exports = {
     BaseEvent: require('./base/BaseEvent'),
     CommandHandler: require('./handlers/CommandHandler'),
     EventHandler: require('./handlers/EventHandler'),
-    Pages: require('./utility/Pages')
+    Pages: require('./utility/Pages'),
+    Database: require('./utility/Database')
 };
