@@ -13,7 +13,7 @@ class CommandHandler {
     }
 
     load(cModule) {
-        let mod = new cModule(this.client)
+        let mod = new cModule(this.client);
         return this.commands.set(mod.name, mod);
     }
 
