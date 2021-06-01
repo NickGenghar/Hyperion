@@ -1,4 +1,5 @@
 const { Collection } = require('discord.js');
+const { resolve:ResolvePath } = require('path');
 
 class CommandHandler {
     prefix = '';
@@ -13,7 +14,10 @@ class CommandHandler {
     }
 
     load(cModule) {
-        let mod = new cModule(this.client);
+        const path = ResolvePath(cModule);
+        if(!path) throw new Error(`Module path unresolvable: ${cModule}`);
+
+        const mod = new (require(path))(this.client);
         return this.commands.set(mod.name, mod);
     }
 
@@ -24,10 +28,15 @@ class CommandHandler {
     }
 
     unload(cModule) {
-        let mod = new cModule();
-        if(this.commands.get(mod.name))
-        this.commands.sweep((v) => v.name == mod.name);
-        else throw new Error('Command module never loaded.');
+        const path = ResolvePath(cModule);
+        if(!path) throw new Error(`Module path unresolvable: ${cModule}`);
+
+        const mod = new (require.cache[require.resolve(path)].exports)();
+        if(this.commands.get(mod.name)) {
+            this.commands.sweep((v) => v.name == mod.name);
+            delete require.cache[require.resolve(path)];
+        }
+        else throw new Error(`Command module never loaded: ${cModule}`);
     }
 
     unloadMulti(cModule) {
@@ -37,10 +46,11 @@ class CommandHandler {
     }
 
     reload(cModule) {
-        if(this.commands.get(new (cModule)().name)) {
-            this.unload(cModule);
-            this.load(cModule);
-        } else throw new Error('Command module never loaded.');
+        const path = ResolvePath(cModule);
+        if(!path) throw new Error(`Module path unresolvable: ${cModule}`);
+
+        this.unload(cModule);
+        this.load(cModule);
     }
 
     reloadMulti(cModule) {
