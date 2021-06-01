@@ -15,6 +15,9 @@
   "repository": "https://github.com/NickGenghar/Hyperion.git",
   "dependencies": {},
   "devDependencies": {
-    "discord.js": "^12.3.1"
+    "discord.js": "^12.3.1",
+    "@discordjs/opus": "^0.5.0",
+    "opusscript": "^0.0.8"
+  
   }
 }

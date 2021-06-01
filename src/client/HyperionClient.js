@@ -1,6 +1,7 @@
 const { Client: DiscordClient } = require('discord.js');
 const CommandHandler = require('../handlers/CommandHandler');
 const EventHandler = require('../handlers/EventHandler');
+const PlayerHandler = require('../handlers/PlayerHandler');
 
 class HyperionClient extends DiscordClient {
     /**
@@ -18,6 +19,7 @@ class HyperionClient extends DiscordClient {
         this.developers = developers;
         this.commandHandler = new CommandHandler(this);
         this.eventHandler = new EventHandler(this);
+        this.playerHandler = new PlayerHandler(this);
     }
 }
 
