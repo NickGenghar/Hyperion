@@ -1,5 +1,5 @@
 const { HyperionClient } = require('../client/HyperionClient');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, ReactionCollectorOptions } = require('discord.js');
 
 class Pages {
     pages = new MessageEmbed();
@@ -9,10 +9,11 @@ class Pages {
     store = null;
     /**
      * 
-     * @param {any} options Options for Pages
      * @param {HyperionClient} client The Hyperion client
+     * @param {{data:[{title:String,desc:String,thumbnail:String,image:String,color:String,fields:[String,String,?Boolean]}],buttons:String[]}} options Options for Pages
+     * @param {ReactionCollectorOptions} collectorOptions The options for the reaction collector.
      */
-    constructor(options = {}, client = undefined) {
+    constructor(client = undefined, options = {}, collectorOptions = {}) {
         const {
             data = [],
             buttons = []
@@ -20,12 +21,18 @@ class Pages {
 
         this.data = data;
         this.buttons = buttons;
+        this.collectorOptions = collectorOptions;
 
         if(typeof client !== 'undefined') this.client = client;
         if(this.data.length <= 0) throw new Error('Error: Data not provided.');
         if(this.buttons.length <= 0) throw new Error('Error: Buttons not provided.');
 
-        this.pages.addFields(this.data[0]);
+        if(this.data[0].title) this.pages.setTitle(this.data[0].title);
+        if(this.data[0].desc) this.pages.setDescription(this.data[0].desc);
+        if(this.data[0].thumbnail) this.pages.setThumbnail(this.data[0].thumbnail);
+        if(this.data[0].image) this.pages.setImage(this.data[0].image);
+        if(this.data[0].color) this.pages.setColor(this.data[0].color);
+        if(this.data[0].fields) this.pages.addFields(this.data[0].fields);
     }
 
     runner() {
@@ -39,7 +46,7 @@ class Pages {
             this.store = msg;
             this.collector = this.store.createReactionCollector((r, u) => {
                 return typeof this.buttons.find(i => i == r.emoji.name) !== 'undefined' && this.serving == u.id;
-            });
+            }, this.collectorOptions);
             this.runner();
             
             this.#addButtons(this.store, this.buttons.map(x => x));
@@ -49,7 +56,7 @@ class Pages {
     readNext() {
         ++this.index;
         if(this.index < this.data.length)
-            this.pages.spliceFields(0,this.pages.fields.length,this.data[this.index]);
+            this.#invokeUpdates();
         else
             this.index = this.data.length - 1;
 
@@ -59,7 +66,7 @@ class Pages {
     readPrevious() {
         --this.index;
         if(this.index >= 0)
-            this.pages.spliceFields(0,this.pages.fields.length,this.data[this.index]);
+            this.#invokeUpdates();
         else
             this.index = 0;
 
@@ -89,6 +96,16 @@ class Pages {
             if(buttons.length > 0)
             this.#addButtons(message, buttons);
         });
+    }
+
+    #invokeUpdates() {
+        //Very ugly, I know... But how am I suppose to invoke the methods dynamically then?
+        if(this.data[this.index].title) this.pages.setTitle(this.data[this.index].title);
+        if(this.data[this.index].desc) this.pages.setDescription(this.data[this.index].desc);
+        if(this.data[this.index].thumbnail) this.pages.setThumbnail(this.data[this.index].thumbnail);
+        if(this.data[this.index].image) this.pages.setImage(this.data[this.index].image);
+        if(this.data[this.index].color) this.pages.setColor(this.data[this.index].color);
+        if(this.data[this.index].fields) this.pages.spliceFields(0,this.pages.fields.length, this.data[this.index].fields ? this.data[this.index].fields : undefined);
     }
 }
 
